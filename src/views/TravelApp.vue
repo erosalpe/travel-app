@@ -8,20 +8,42 @@ import OpenTripButton from '../components/OpenTripButton.vue'
 import { useInputStore } from '../stores/userInput.js'
 import L from 'leaflet';
 
-const inputStore = useInputStore()
+const inputStore = useInputStore();
 const arrayStore = useArrayStore();
+const markers = ref([]); // Array per memorizzare i marker
+
 
 // Stato per tracciare quale elemento è attualmente attivo
 const activeIndex = ref(null)
 
 // Funzione per aggiornare l'indice attivo
 const setActiveIndex = (index) => {
+
   // Se l'elemento cliccato è già attivo, lo disattiviamo
   if (activeIndex.value === index) {
     activeIndex.value = null
+
+    // Itera su tutti i marker e rimuovili dalla mappa
+    markers.value.forEach(marker => {
+        marker.remove(); // Rimuove il marker dalla mappa
+    });
+
+    // Svuota l'array dei marker
+    markers.value = [];
   } else {
+
     // Altrimenti, attiviamo l'elemento cliccato
     activeIndex.value = index
+
+    //crea i marker e li inserisce nell'array
+    if (mapInstance.value) {
+        arrayStore.arrayViaggi[index].tappe.forEach((element) => {
+            console.log(element.lat, element.lon);
+            const newMarker = L.marker([element.lat, element.lon]).addTo(mapInstance.value);
+            markers.value.push(newMarker);
+        });
+        
+    }
   }
 }
 
@@ -46,7 +68,7 @@ function onMapReady(map) {
 function showMarker(lat,lon){
     console.log(lat, lon);
     if (mapInstance.value) {
-        L.marker([lat, lon]).addTo(mapInstance.value);
+        mapInstance.value.setView([lat, lon], 15);
     }
 }
 </script>
@@ -72,7 +94,7 @@ function showMarker(lat,lon){
             <!--Parte sinistra contenente i viaggi-->
             <div v-else>
                 <div class="d-flex flex-column gap-5 mt-5 w-100">
-                    <div v-for="(trip,index) in arrayStore.arrayViaggi" class="d-flex justify-content-between bg-primary p-3 rounded fs-6" :id="index" :style="getStyle(index)"  @click="setActiveIndex(index)">
+                    <div v-for="(trip,index) in arrayStore.arrayViaggi" class="d-flex justify-content-between bg-primary p-3 rounded fs-6" :id="index" :style="getStyle(index)"  >
                         <div class="overflow-hidden">
                             <div class="gap-3 d-flex align-items-center align-self-start">
                                 <span class="text-light">Nome: {{ trip.nome }}</span>
@@ -93,7 +115,7 @@ function showMarker(lat,lon){
                                 </div>
                             </div>
                         </div>
-                        <OpenTripButton :class="{ rotated: activeIndex === index }" />
+                        <OpenTripButton :class="{ rotated: activeIndex === index }" @chevron-clicked="setActiveIndex(index)"/>
                     </div>
                 </div>
             </div>
