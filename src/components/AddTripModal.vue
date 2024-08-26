@@ -28,7 +28,7 @@ function saveTrip(){
             nome: inputStore.tripName,
             durata: inputStore.tripDays,
             costo: inputStore.tripCost,
-            tappe: {},
+            tappe: [],
         }
     );
 

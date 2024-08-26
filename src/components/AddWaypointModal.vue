@@ -7,35 +7,56 @@ const arrayStore = useArrayStore();
 
 const inputStore = useInputStore()
 
-const tripName = computed({
-  get: () => inputStore.tripName,
-  set: (value) => inputStore.setTripName(value)
+const waypointName = computed({
+  get: () => inputStore.waypointName,
+  set: (value) => inputStore.setWaypointName(value)
 })
 
-const tripDays = computed({
-  get: () => inputStore.tripDays,
-  set: (value) => inputStore.setTripDays(value)
+const waypointDescription = computed({
+  get: () => inputStore.waypointDescription,
+  set: (value) => inputStore.setWaypointDescription(value)
 })
 
-const tripCost = computed({
-  get: () => inputStore.tripCost,
-  set: (value) => inputStore.setTripCost(value)
+const waypointDate = computed({
+  get: () => inputStore.waypointDate,
+  set: (value) => inputStore.setWaypointDate(value)
 })
 
-function saveTrip(){
-    arrayStore.arrayViaggi.push(
+const waypointTime = computed({
+  get: () => inputStore.waypointTime,
+  set: (value) => inputStore.setWaypointTime(value)
+})
+
+const waypointImages = computed({
+  get: () => inputStore.waypointImages,
+  set: (value) => inputStore.setWaypointImages(value)
+})
+
+const waypointCoordinates = computed({
+  get: () => inputStore.waypointCoordinates,
+  set: (value) => inputStore.setWaypointCoordinates(value)
+})
+
+function saveWaypoint(){
+    arrayStore.arrayViaggi[inputStore.clickedTripId].tappe.push(
         {
-            nome: inputStore.tripName,
-            durata: inputStore.tripDays,
-            costo: inputStore.tripCost,
-            tappe: {},
+            nome: inputStore.waypointName,
+            descrizione: inputStore.waypointDescription,
+            data: inputStore.waypointDate,
+            ora: inputStore.waypointTime,
+            immagini: inputStore.waypointImages,
+            coordinate: inputStore.waypointCoordinates
         }
     );
 
-    inputStore.setTripName();
-    inputStore.setTripDays();
-    inputStore.setTripCost();
-    console.log(arrayStore.arrayViaggi);
+    console.log(arrayStore.arrayViaggi[inputStore.clickedTripId].tappe);
+    inputStore.setWaypointName()
+    inputStore.setWaypointDescription()
+    inputStore.setWaypointDate()
+    inputStore.setWaypointTime()
+    inputStore.setWaypointImages()
+    inputStore.setWaypointCoordinates()
+    
 }
 </script>
 
@@ -55,24 +76,39 @@ function saveTrip(){
                 <div class="modal-body d-flex flex-column gap-4">
 
                     <div class="d-flex flex-column">
-                        <label for="tripName">Nome del viaggio:</label>
-                        <input type="text" v-model="tripName" maxlength="32" placeholder="Massimo 32 caratteri" id="tripName" name="tripName"/>
+                        <label for="tripName">Nome della tappa:</label>
+                        <input type="text" v-model="waypointName" maxlength="32" placeholder="Massimo 32 caratteri" id="tripName" name="tripName"/>
                     </div>
 
                     <div class="d-flex flex-column">
-                        <label for="tripDays">Durata del viaggio in giorni:</label>
-                        <input type="number" v-model="tripDays" min="0" max="365" placeholder="Massimo 32 caratteri" id="tripDays" name="tripDays"/>
+                        <label for="tripDays">Descrizione:</label>
+                        <input type="number" v-model="waypointDescription" min="0" max="365" placeholder="Massimo 32 caratteri" id="tripDays" name="tripDays"/>
                     </div>
 
                     <div class="d-flex flex-column">
-                        <label for="tripCost">Costo del viaggio:</label>
-                        <input type="number" v-model="tripCost" min="0" max="9999999" placeholder="Massimo 32 caratteri" id="tripCost" name="tripCost"/>
+                        <label for="tripCost">Data:</label>
+                        <input type="number" v-model="waypointDate" min="0" max="9999999" placeholder="Massimo 32 caratteri" id="tripCost" name="tripCost"/>
+                    </div>
+
+                    <div class="d-flex flex-column">
+                        <label for="tripCost">Orario:</label>
+                        <input type="number" v-model="waypointTime" min="0" max="9999999" placeholder="Massimo 32 caratteri" id="tripCost" name="tripCost"/>
+                    </div>
+
+                    <div class="d-flex flex-column">
+                        <label for="tripCost">Immagini:</label>
+                        <input type="number" v-model="waypointImages" min="0" max="9999999" placeholder="Massimo 32 caratteri" id="tripCost" name="tripCost"/>
+                    </div>
+
+                    <div class="d-flex flex-column">
+                        <label for="tripCost">Coordinate:</label>
+                        <input type="number" v-model="waypointCoordinates" min="0" max="9999999" placeholder="Massimo 32 caratteri" id="tripCost" name="tripCost"/>
                     </div>
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Indietro</button>
-                    <button type="button" class="btn btn-success" @click="saveTrip">Aggiungi</button>
+                    <button type="button" class="btn btn-success" @click="saveWaypoint">Aggiungi</button>
                 </div>
             </div>
         </div>

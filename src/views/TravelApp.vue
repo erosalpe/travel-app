@@ -5,6 +5,8 @@ import { ref } from 'vue'
 import AddTripModal from '../components/AddTripModal.vue'
 import AddWaypointModal from '../components/AddWaypointModal.vue'
 import OpenTripButton from '../components/OpenTripButton.vue'
+import { useInputStore } from '../stores/userInput.js'
+const inputStore = useInputStore()
 const arrayStore = useArrayStore();
 
 // Stato per tracciare quale elemento è attualmente attivo
@@ -27,6 +29,13 @@ const getStyle = (index) => {
     height: activeIndex.value === index ? '500px' : '68px',
     transition: 'height 0.3s ease'
   }
+}
+
+function getTripId(value){
+    inputStore.setClickedTripId(value);
+    console.log(arrayStore.arrayViaggi[inputStore.clickedTripId].tappe);
+    console.log(value);
+    console.log(arrayStore.arrayViaggi[inputStore.clickedTripId]);
 }
 </script>
 
@@ -51,12 +60,12 @@ const getStyle = (index) => {
             <!--Parte sinistra contenente i viaggi-->
             <div v-else>
                 <div class="d-flex flex-column gap-5 mt-5 w-100">
-                    <div v-for="(trip,index) in arrayStore.arrayViaggi" class="d-flex justify-content-between bg-primary p-3 rounded fs-4" :id="index" :style="getStyle(index)"  @click="setActiveIndex(index)">
-                        <div class="gap-3 d-flex align-items-start">
+                    <div v-for="(trip,index) in arrayStore.arrayViaggi" class="d-flex justify-content-between bg-primary p-3 rounded fs-6" :id="index" :style="getStyle(index)"  @click="setActiveIndex(index)">
+                        <div class="gap-3 d-flex align-items-center align-self-start">
                             <span class="text-light">Nome: {{ trip.nome }}</span>
                             <span class="text-light">Durata: {{ trip.durata }} giorni</span>
                             <span class="text-light">Costo: {{ trip.costo }}€</span>
-                            <button type="button" class="btn btn-warning align-self-start" data-bs-toggle="modal" data-bs-target="#waypointModal">
+                            <button type="button" class="btn btn-warning align-self-start" data-bs-toggle="modal" data-bs-target="#waypointModal" @click="getTripId(index)">
                                 Aggiungi una Tappa
                             </button>
                             <AddWaypointModal/>
