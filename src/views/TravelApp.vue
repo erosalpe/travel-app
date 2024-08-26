@@ -80,7 +80,7 @@ function showMarker(lat,lon){
 
 <template>
     <div id="h-app" class="d-flex gap-5">
-        <div id="empty-trip-container" class="w-50 bg-light p-3 rounded d-flex flex-column h-100">
+        <div id="trip-container" class="w-50 bg-light p-3 rounded d-flex flex-column h-100">
             <div class="align-self-end">
 
                 <!-- Bottone aggiunta viaggi -->
@@ -94,7 +94,7 @@ function showMarker(lat,lon){
             <!--Parte sinistra contenente i viaggi-->
             <div v-else>
                 <div class="d-flex flex-column gap-5 mt-5 w-100">
-                    <div v-for="(trip,index) in arrayStore.arrayViaggi" class="d-flex justify-content-between bg-primary p-3 rounded fs-6" :id="index" :style="getStyle(index)"  >
+                    <div v-for="(trip,index) in arrayStore.arrayViaggi" class="d-flex justify-content-between bg-primary p-3 rounded fs-6 single-trip" :id="index" :style="getStyle(index)">
                         <div class="overflow-hidden">
                             <div class="gap-3 d-flex align-items-center align-self-start">
                                 <span class="text-light">Nome: {{ trip.nome }}</span>
@@ -122,7 +122,7 @@ function showMarker(lat,lon){
         </div>
 
         <!--Parte destra con mappa-->
-        <div class="w-50 h-100">
+        <div class="w-50 h-100" id="map-container">
             <MapComponent @map-ready="onMapReady"/>
         </div>
         
@@ -144,5 +144,14 @@ function showMarker(lat,lon){
     .rotated {
         transform: rotate(180deg);
         transition-duration: 0.3s ease;
+    }
+
+    #trip-container,
+    #map-container,
+    .single-trip
+    {
+        box-shadow: -1px 0px 15px 5px rgba(0,0,0,0.45);
+        -webkit-box-shadow: -1px 0px 15px 5px rgba(0,0,0,0.45);
+        -moz-box-shadow: -1px 0px 15px 5px rgba(0,0,0,0.45);
     }
 </style>
