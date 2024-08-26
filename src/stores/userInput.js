@@ -5,13 +5,14 @@ export const useInputStore = defineStore('inputStore', {
     clickedTripId: '',
     tripName: '',
     tripDays: '',
-    tripCost: '',
+    tripCost: 0,
     waypointName: '',
     waypointDescription: '',
     waypointDate: '',
     waypointTime: '',
     waypointImages: [],
-    waypointCoordinates: '',
+    waypointLat: 0,
+    waypointLon: 0,
   }),
   actions: {
     setClickedTripId(value) {
@@ -41,8 +42,11 @@ export const useInputStore = defineStore('inputStore', {
     setWaypointImages(value) {
       this.waypointImages = value;
     },
-    setWaypointCoordinates(value) {
-      this.waypointCoordinates = value;
+    setWaypointLat(value) {
+      this.waypointLat = value;
+    },
+    setWaypointLon(value) {
+      this.waypointLon = value;
     },
   }
 })

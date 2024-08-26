@@ -2,6 +2,8 @@
 import { onMounted } from 'vue'
 import L from 'leaflet';
 
+const emit = defineEmits(['map-ready']);
+
 onMounted(() => {
   var map = L.map('map').setView([51.505, -0.09], 13);
 
@@ -9,7 +11,12 @@ onMounted(() => {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   }).addTo(map);
+  
+  // Emetti l'istanza della mappa al componente padre
+  emit('map-ready', map);
 });
+
+
 </script>
 
 <template>
@@ -22,4 +29,3 @@ onMounted(() => {
     height: 100%;
   }
 </style>
-../stores/counter.js/index.js

@@ -2,6 +2,7 @@
 import { useInputStore } from '../stores/userInput.js'
 import { computed } from 'vue'
 import { useArrayStore } from '../stores/travels.js'
+import waypointSearch from '../components/waypointSearch.vue'
 
 const arrayStore = useArrayStore();
 
@@ -32,9 +33,14 @@ const waypointImages = computed({
   set: (value) => inputStore.setWaypointImages(value)
 })
 
-const waypointCoordinates = computed({
-  get: () => inputStore.waypointCoordinates,
-  set: (value) => inputStore.setWaypointCoordinates(value)
+const waypointLat = computed({
+  get: () => inputStore.waypointLat,
+  set: (value) => inputStore.setWaypointLat(value)
+})
+
+const waypointLon = computed({
+  get: () => inputStore.waypointLon,
+  set: (value) => inputStore.setWaypointLon(value)
 })
 
 function saveWaypoint(){
@@ -45,7 +51,8 @@ function saveWaypoint(){
             data: inputStore.waypointDate,
             ora: inputStore.waypointTime,
             immagini: inputStore.waypointImages,
-            coordinate: inputStore.waypointCoordinates
+            lat: inputStore.waypointLat,
+            lon: inputStore.waypointLon,
         }
     );
 
@@ -55,7 +62,8 @@ function saveWaypoint(){
     inputStore.setWaypointDate()
     inputStore.setWaypointTime()
     inputStore.setWaypointImages()
-    inputStore.setWaypointCoordinates()
+    inputStore.setWaypointLat(0)
+    inputStore.setWaypointLon(0)
     
 }
 </script>
@@ -101,10 +109,16 @@ function saveWaypoint(){
                     </div>
 
                     <div class="d-flex flex-column">
-                        <label for="tripCost">Coordinate:</label>
-                        <input type="number" v-model="waypointCoordinates" min="0" max="9999999" placeholder="Massimo 32 caratteri" id="tripCost" name="tripCost"/>
+                        <label for="tripCost">Lat:</label>
+                        <input type="number" v-model="waypointLat" min="0" max="9999999" placeholder="Massimo 32 caratteri" id="tripCost" name="tripCost"/>
                     </div>
-
+                    <div class="d-flex flex-column">
+                        <label for="tripCost">Lon:</label>
+                        <input type="number" v-model="waypointLon" min="0" max="9999999" placeholder="Massimo 32 caratteri" id="tripCost" name="tripCost"/>
+                    </div>
+                    <div>
+                        <waypointSearch/>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Indietro</button>

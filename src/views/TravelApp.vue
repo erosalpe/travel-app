@@ -6,6 +6,8 @@ import AddTripModal from '../components/AddTripModal.vue'
 import AddWaypointModal from '../components/AddWaypointModal.vue'
 import OpenTripButton from '../components/OpenTripButton.vue'
 import { useInputStore } from '../stores/userInput.js'
+import L from 'leaflet';
+
 const inputStore = useInputStore()
 const arrayStore = useArrayStore();
 
@@ -26,16 +28,26 @@ const setActiveIndex = (index) => {
 // Funzione per ottenere lo stile in base all'elemento attivo
 const getStyle = (index) => {
   return {
-    height: activeIndex.value === index ? '500px' : '68px',
+    height: activeIndex.value === index ? '500px' : '70px',
     transition: 'height 0.3s ease'
   }
 }
 
 function getTripId(value){
     inputStore.setClickedTripId(value);
-    console.log(arrayStore.arrayViaggi[inputStore.clickedTripId].tappe);
-    console.log(value);
-    console.log(arrayStore.arrayViaggi[inputStore.clickedTripId]);
+}
+
+const mapInstance = ref(null);
+
+function onMapReady(map) {
+  mapInstance.value = map;
+}
+
+function showMarker(lat,lon){
+    console.log(lat, lon);
+    if (mapInstance.value) {
+        L.marker([lat, lon]).addTo(mapInstance.value);
+    }
 }
 </script>
 
@@ -61,14 +73,25 @@ function getTripId(value){
             <div v-else>
                 <div class="d-flex flex-column gap-5 mt-5 w-100">
                     <div v-for="(trip,index) in arrayStore.arrayViaggi" class="d-flex justify-content-between bg-primary p-3 rounded fs-6" :id="index" :style="getStyle(index)"  @click="setActiveIndex(index)">
-                        <div class="gap-3 d-flex align-items-center align-self-start">
-                            <span class="text-light">Nome: {{ trip.nome }}</span>
-                            <span class="text-light">Durata: {{ trip.durata }} giorni</span>
-                            <span class="text-light">Costo: {{ trip.costo }}€</span>
-                            <button type="button" class="btn btn-warning align-self-start" data-bs-toggle="modal" data-bs-target="#waypointModal" @click="getTripId(index)">
-                                Aggiungi una Tappa
-                            </button>
-                            <AddWaypointModal/>
+                        <div class="overflow-hidden">
+                            <div class="gap-3 d-flex align-items-center align-self-start">
+                                <span class="text-light">Nome: {{ trip.nome }}</span>
+                                <span class="text-light">Durata: {{ trip.durata }} giorni</span>
+                                <span class="text-light">Costo: {{ trip.costo }}€</span>
+                                <button type="button" class="btn btn-warning align-self-start" data-bs-toggle="modal" data-bs-target="#waypointModal" @click="getTripId(index)">
+                                    Aggiungi una Tappa
+                                </button>
+                                <AddWaypointModal/>
+                            </div>
+                            <div class="overflow-auto d-flex flex-column gap-3 mt-3">
+                                <div v-for="(waypoint,index) in arrayStore.arrayViaggi[index].tappe"class="bg-secondary-subtle rounded p-2 d-flex gap-3" @click="showMarker(waypoint.lat, waypoint.lon)">
+                                    <span>Nome: {{ waypoint.nome }}</span>
+                                    <span>Descrizione: {{ waypoint.descrizione }}</span>
+                                    <span>Data: {{ waypoint.data }}</span>
+                                    <span>Orario: {{ waypoint.ora }}</span>
+                                    <span>Immagini: {{ waypoint.immagini }}</span>
+                                </div>
+                            </div>
                         </div>
                         <OpenTripButton :class="{ rotated: activeIndex === index }" />
                     </div>
@@ -78,7 +101,7 @@ function getTripId(value){
 
         <!--Parte destra con mappa-->
         <div class="w-50 h-100">
-            <MapComponent/>
+            <MapComponent @map-ready="onMapReady"/>
         </div>
         
     </div>
