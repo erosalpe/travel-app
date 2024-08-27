@@ -53,7 +53,7 @@
         />
         <ul v-if="results.length">
             <li v-for="(result, index) in results" :key="index" @click="selectLocation(result)">
-                {{ result.display_name }} - [{{ result.lat }}, {{ result.lon }}]
+                {{ result.display_name }}
             </li>
         </ul>
   </div>

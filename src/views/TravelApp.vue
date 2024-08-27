@@ -7,6 +7,8 @@ import AddWaypointModal from '../components/AddWaypointModal.vue'
 import OpenTripButton from '../components/OpenTripButton.vue'
 import { useInputStore } from '../stores/userInput.js'
 import L from 'leaflet';
+import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
+import 'vue3-carousel/dist/carousel.css';  // Importa gli stili del carosello
 
 const inputStore = useInputStore();
 const arrayStore = useArrayStore();
@@ -50,7 +52,7 @@ const setActiveIndex = (index) => {
 // Funzione per ottenere lo stile in base all'elemento attivo
 const getStyle = (index) => {
   return {
-    height: activeIndex.value === index ? '500px' : '70px',
+    height: activeIndex.value === index ? '620px' : '70px',
     transition: 'height 0.3s ease'
   }
 }
@@ -80,7 +82,7 @@ function showMarker(lat,lon){
 
 <template>
     <div id="h-app" class="d-flex gap-5">
-        <div id="trip-container" class="w-50 bg-light p-3 rounded d-flex flex-column h-100">
+        <div id="trip-container" class="w-50 bg-light p-4 rounded d-flex flex-column h-100 overflow-auto">
             <div class="align-self-end">
 
                 <!-- Bottone aggiunta viaggi -->
@@ -95,7 +97,7 @@ function showMarker(lat,lon){
             <div v-else>
                 <div class="d-flex flex-column gap-5 mt-5 w-100">
                     <div v-for="(trip,index) in arrayStore.arrayViaggi" class="d-flex justify-content-between bg-primary p-3 rounded fs-6 single-trip" :id="index" :style="getStyle(index)">
-                        <div class="overflow-hidden">
+                        <div class="overflow-hidden w-100">
                             <div class="gap-3 d-flex align-items-center align-self-start">
                                 <span class="text-light">Nome: {{ trip.nome }}</span>
                                 <span class="text-light">Durata: {{ trip.durata }} giorni</span>
@@ -105,13 +107,32 @@ function showMarker(lat,lon){
                                 </button>
                                 <AddWaypointModal/>
                             </div>
-                            <div class="overflow-auto d-flex flex-column gap-3 mt-3">
-                                <div v-for="(waypoint,index) in arrayStore.arrayViaggi[index].tappe"class="bg-secondary-subtle rounded p-2 d-flex gap-3" @click="showMarker(waypoint.lat, waypoint.lon)">
-                                    <span>Nome: {{ waypoint.nome }}</span>
-                                    <span>Descrizione: {{ waypoint.descrizione }}</span>
-                                    <span>Data: {{ waypoint.data }}</span>
-                                    <span>Orario: {{ waypoint.ora }}</span>
-                                    <span>Immagini: {{ waypoint.immagini }}</span>
+                            <div class="d-flex gap-4 mt-3 flex-column waypoints-container">
+                                <div v-for="(waypoint,index) in arrayStore.arrayViaggi[index].tappe"class="bg-secondary-subtle rounded gap-3" @click="showMarker(waypoint.lat, waypoint.lon)">
+                                    <div class="d-flex gap-4 p-3">
+                                        <!-- Utilizza il componente Carousel con i componenti Slide, Pagination, e Navigation -->
+                                        <Carousel :items-to-show="1" class="w-50">
+                                            <Slide v-for="(image,index) in waypoint.immagini" :key="index">
+                                                <img :src="image" class="card-img-top" alt="image">
+                                            </Slide>
+
+                                            <!-- Utilizza i template slots per aggiungere componenti aggiuntivi -->
+                                            <template #addons>
+                                                <Navigation />
+                                                <Pagination />
+                                            </template>
+                                        </Carousel>
+                                        <div class="card-body w-50 d-flex flex-column justify-content-between">
+                                            <div>
+                                                <h5 class="card-title mb-2 text-capitalize">{{ waypoint.nome }}</h5>
+                                                <p class="card-text overflow-auto">{{ waypoint.descrizione }}</p>
+                                            </div>
+                                            <div>
+                                                <p class="card-text">Data: {{ waypoint.data }}</p>
+                                                <p class="card-text">Ora: {{ waypoint.ora }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -153,5 +174,25 @@ function showMarker(lat,lon){
         box-shadow: -1px 0px 15px 5px rgba(0,0,0,0.45);
         -webkit-box-shadow: -1px 0px 15px 5px rgba(0,0,0,0.45);
         -moz-box-shadow: -1px 0px 15px 5px rgba(0,0,0,0.45);
+    }
+    
+    .card-img-top{
+        width: 200px;
+        height: 200px;
+        border: 2px solid black;
+        border-radius: 5px;
+    }
+
+    .waypoints-container{
+        overflow: auto;
+        height: 100%;
+    }
+
+    ::-webkit-scrollbar {
+        display: none; /* Nascondi la barra di scorrimento */
+    }
+
+    .card-text.overflow-auto{
+        height: 120px;
     }
 </style>

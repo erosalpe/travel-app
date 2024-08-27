@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 
 export const useInputStore = defineStore('inputStore', {
   state: () => ({
+    userName: '',
     clickedTripId: '',
     tripName: '',
     tripDays: '',
@@ -15,6 +16,9 @@ export const useInputStore = defineStore('inputStore', {
     waypointLon: 0,
   }),
   actions: {
+    setUserName(value) {
+      this.userName = value;
+    },
     setClickedTripId(value) {
       this.clickedTripId = value;
     },
@@ -39,7 +43,10 @@ export const useInputStore = defineStore('inputStore', {
     setWaypointTime(value) {
       this.waypointTime = value;
     },
-    setWaypointImages(value) {
+    setWaypointImages(newImages) {
+      this.waypointImages = [...this.waypointImages, ...newImages];
+    },
+    resetWaypointImages(value) {
       this.waypointImages = value;
     },
     setWaypointLat(value) {

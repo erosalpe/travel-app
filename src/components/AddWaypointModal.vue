@@ -28,21 +28,6 @@ const waypointTime = computed({
   set: (value) => inputStore.setWaypointTime(value)
 })
 
-const waypointImages = computed({
-  get: () => inputStore.waypointImages,
-  set: (value) => inputStore.setWaypointImages(value)
-})
-
-const waypointLat = computed({
-  get: () => inputStore.waypointLat,
-  set: (value) => inputStore.setWaypointLat(value)
-})
-
-const waypointLon = computed({
-  get: () => inputStore.waypointLon,
-  set: (value) => inputStore.setWaypointLon(value)
-})
-
 function saveWaypoint(){
     arrayStore.arrayViaggi[inputStore.clickedTripId].tappe.push(
         {
@@ -61,11 +46,39 @@ function saveWaypoint(){
     inputStore.setWaypointDescription()
     inputStore.setWaypointDate()
     inputStore.setWaypointTime()
-    inputStore.setWaypointImages()
+    inputStore.resetWaypointImages([])
     inputStore.setWaypointLat(0)
     inputStore.setWaypointLon(0)
-    
 }
+
+import { ref } from 'vue';
+
+// Stato per memorizzare le anteprime delle immagini
+const imagePreviews = ref([]);
+
+// Funzione per gestire il caricamento dei file
+const handleFileChange = (event) => {
+  const files = event.target.files;
+  console.log(inputStore.waypointImages);
+
+  // Crea un array di FileReader Promises per leggere le immagini
+  const filePromises = Array.from(files).map((file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file); // Legge il file come URL di dati
+    });
+  });
+
+  // Quando tutte le immagini sono lette, aggiorna lo stato delle anteprime
+  Promise.all(filePromises).then((urls) => {
+    imagePreviews.value = urls; // Solo per anteprima
+    inputStore.setWaypointImages(urls); // Aggiungi le immagini allo store
+  }).catch((error) => {
+    console.error('Error reading files:', error);
+  });
+};
 </script>
 
 
@@ -84,38 +97,38 @@ function saveWaypoint(){
                 <div class="modal-body d-flex flex-column gap-4">
 
                     <div class="d-flex flex-column">
-                        <label for="tripName">Nome della tappa:</label>
-                        <input type="text" v-model="waypointName" maxlength="32" placeholder="Massimo 32 caratteri" id="tripName" name="tripName"/>
+                        <label for="waypointName">Nome della tappa:</label>
+                        <input type="text" v-model="waypointName" maxlength="32" placeholder="Massimo 32 caratteri" id="waypointName" name="waypointName"/>
                     </div>
 
                     <div class="d-flex flex-column">
-                        <label for="tripDays">Descrizione:</label>
-                        <input type="number" v-model="waypointDescription" min="0" max="365" placeholder="Massimo 32 caratteri" id="tripDays" name="tripDays"/>
+                        <label for="waypointDesc">Descrizione:</label>
+                        <textarea v-model="waypointDescription" rows="4" cols="50" id="waypointDesc" name="waypointDesc"/>
                     </div>
 
                     <div class="d-flex flex-column">
-                        <label for="tripCost">Data:</label>
-                        <input type="number" v-model="waypointDate" min="0" max="9999999" placeholder="Massimo 32 caratteri" id="tripCost" name="tripCost"/>
+                        <label for="waypointDate">Data:</label>
+                        <input type="date" v-model="waypointDate" id="waypointDate" name="waypointDate"/>
                     </div>
 
                     <div class="d-flex flex-column">
-                        <label for="tripCost">Orario:</label>
-                        <input type="number" v-model="waypointTime" min="0" max="9999999" placeholder="Massimo 32 caratteri" id="tripCost" name="tripCost"/>
+                        <label for="waypointTime">Orario:</label>
+                        <input type="time" v-model="waypointTime" id="waypointTime" name="waypointTime"/>
                     </div>
 
-                    <div class="d-flex flex-column">
-                        <label for="tripCost">Immagini:</label>
-                        <input type="number" v-model="waypointImages" min="0" max="9999999" placeholder="Massimo 32 caratteri" id="tripCost" name="tripCost"/>
+                    <div>
+                        <div class="d-flex flex-column">
+                            <label for="waypointImage">Immagini:</label>
+                            <input type="file" @change="handleFileChange" multiple accept="image/*" id="waypointImage" name="waypointImage"/>
+                        </div>
+    
+                        <div v-if="inputStore.waypointImages.length">
+                            <div v-for="(image, index) in inputStore.waypointImages" :key="index" class="image-preview">
+                                <img :src="image" alt="Preview" />
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="d-flex flex-column">
-                        <label for="tripCost">Lat:</label>
-                        <input type="number" v-model="waypointLat" min="0" max="9999999" placeholder="Massimo 32 caratteri" id="tripCost" name="tripCost"/>
-                    </div>
-                    <div class="d-flex flex-column">
-                        <label for="tripCost">Lon:</label>
-                        <input type="number" v-model="waypointLon" min="0" max="9999999" placeholder="Massimo 32 caratteri" id="tripCost" name="tripCost"/>
-                    </div>
                     <div>
                         <waypointSearch/>
                     </div>
@@ -138,7 +151,16 @@ function saveWaypoint(){
 
 <style scoped>
     
+/* Aggiungi stili per le immagini di anteprima */
+.image-preview {
+  display: inline-block;
+  margin: 5px;
+}
 
+.image-preview img {
+  max-width: 150px;
+  max-height: 150px;
+}
 
 
 
