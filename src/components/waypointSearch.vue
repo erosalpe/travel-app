@@ -40,19 +40,23 @@
         inputStore.setWaypointLat(result.lat);
         inputStore.setWaypointLon(result.lon);
         console.log('Coordinate salvate:', inputStore.waypointLat, inputStore.setWaypointLon);
+        results.value = [];
     };
 </script>
 
 <template>
     <div>
-        <input 
-            type="text" 
-            v-model="query" 
-            @input="searchLocation" 
-            placeholder="Cerca un luogo..." 
-        />
-        <ul v-if="results.length">
-            <li v-for="(result, index) in results" :key="index" @click="selectLocation(result)">
+        <div class="d-flex gap-3">
+            <input 
+                type="text" 
+                v-model="query" 
+                @input="searchLocation" 
+                placeholder="Cerca un luogo..." 
+            />
+            <svg v-if="inputStore.waypointLat" class="green-check bg-success rounded-5 p-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="#000000" d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"/></svg>
+        </div>
+        <ul v-if="results.length" class="overflow-auto">
+            <li v-for="(result, index) in results" :key="index" @click="selectLocation(result)" class="search-list-element">
                 {{ result.display_name }}
             </li>
         </ul>
@@ -60,5 +64,15 @@
 </template>
 
 <style scoped>
+.green-check{
+    width: 30px;
+}
 
+.search-list-element:hover{
+    color: blue;
+}
+
+.search-list-element:hover{
+    cursor: pointer;
+}
 </style>

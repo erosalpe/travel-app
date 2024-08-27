@@ -15,7 +15,7 @@
 
 <template>
     <div class="d-flex justify-content-between align-items-center">
-        <h1>Travel App</h1>
+        <h1>Travel Buddy</h1>
         <div>
             <div v-if="!inputStore.userName">
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#usernameModal">Set your username</button>

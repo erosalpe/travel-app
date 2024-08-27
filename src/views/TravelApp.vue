@@ -68,6 +68,20 @@ function onMapReady(map) {
 function showMarker(lat,lon){
     console.log(lat, lon);
     if (mapInstance.value) {
+        const exists = markers.value.some(marker => 
+        marker.lat === lat && marker.lon === lon
+    );
+
+    if (!exists) {
+        // Aggiungi il marker alla mappa
+        const newMarker = L.marker([lat, lon]).addTo(mapInstance.value);
+        // Aggiungi il marker al tuo array di markers
+        markers.value.push({ lat: lat, lon: lon, marker: newMarker });
+        // Esegui qualsiasi altra azione se il marker non esiste
+        console.log('Marker aggiunto!');
+    } else {
+        console.log('Il marker esiste già.');
+    }
         mapInstance.value.setView([lat, lon], 15);
     }
 }
@@ -109,7 +123,7 @@ function showMarker(lat,lon){
                                 <AddWaypointModal/>
                             </div>
                             <div class="d-flex gap-4 mt-3 flex-column waypoints-container">
-                                <div v-for="(waypoint,index) in inputStore.arrayViaggi[index].tappe"class="bg-secondary-subtle rounded gap-3" @click="showMarker(waypoint.lat, waypoint.lon)">
+                                <div v-for="(waypoint,index) in inputStore.arrayViaggi[index].tappe"class="bg-secondary-subtle rounded gap-3 waypoint-margin" @click="showMarker(waypoint.lat, waypoint.lon)">
                                     <div class="d-flex gap-4 p-3">
                                         <!-- Utilizza il componente Carousel con i componenti Slide, Pagination, e Navigation -->
                                         <Carousel :items-to-show="1" class="w-50">
@@ -195,5 +209,9 @@ function showMarker(lat,lon){
 
     .card-text.overflow-auto{
         height: 120px;
+    }
+
+    .waypoint-margin:last-child{
+        margin-bottom: 100px;
     }
 </style>
