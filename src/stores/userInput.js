@@ -81,6 +81,9 @@ export const useInputStore = defineStore('inputStore', {
     saveToLocalStorage() {
       localStorage.setItem('inputStore', JSON.stringify(this.$state));
     },
+    removeWaypoint(index){
+      this.arrayViaggi.tappe.splice(index, 1)
+    },
     loadFromLocalStorage() {
       const storedState = localStorage.getItem('inputStore');
       if (storedState) {

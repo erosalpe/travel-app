@@ -50,7 +50,7 @@ const setActiveIndex = (index) => {
 // Funzione per ottenere lo stile in base all'elemento attivo
 const getStyle = (index) => {
   return {
-    height: activeIndex.value === index ? '620px' : '70px',
+    height: activeIndex.value === index ? '700px' : '70px',
     transition: 'height 0.3s ease'
   }
 }
@@ -100,9 +100,12 @@ function showMarker(lat,lon){
                                 <span class="text-light">Nome: {{ trip.nome }}</span>
                                 <span class="text-light">Durata: {{ trip.durata }} giorni</span>
                                 <span class="text-light">Costo: {{ trip.costo }}€</span>
-                                <button type="button" class="btn btn-warning align-self-start" data-bs-toggle="modal" data-bs-target="#waypointModal" @click="getTripId(index)">
+                            </div>
+                            <div class="mt-4 d-flex gap-4">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#waypointModal" @click="getTripId(index)">
                                     Aggiungi una Tappa
                                 </button>
+                                <button class="btn btn-danger" @click="inputStore.removeItem(index)">Rimuovi Viaggio</button>
                                 <AddWaypointModal/>
                             </div>
                             <div class="d-flex gap-4 mt-3 flex-column waypoints-container">
