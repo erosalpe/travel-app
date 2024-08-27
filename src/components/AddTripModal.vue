@@ -23,7 +23,7 @@ const tripCost = computed({
 })
 
 function saveTrip(){
-    arrayStore.arrayViaggi.push(
+    arrayStore.addItem(
         {
             nome: inputStore.tripName,
             durata: inputStore.tripDays,

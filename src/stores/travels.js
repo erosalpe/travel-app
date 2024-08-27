@@ -7,10 +7,10 @@ export const useArrayStore = defineStore('arrayStore', {
   }),
   actions: {
     addItem(item) {
-      this.items.push(item)
+      this.arrayViaggi.push(item)
     },
     removeItem(index) {
-      this.items.splice(index, 1)
+      this.arrayViaggi.splice(index, 1)
     },
   }
 })
