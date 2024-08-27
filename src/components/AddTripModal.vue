@@ -1,9 +1,6 @@
 <script setup>
 import { useInputStore } from '../stores/userInput.js'
 import { computed } from 'vue'
-import { useArrayStore } from '../stores/travels.js'
-
-const arrayStore = useArrayStore();
 
 const inputStore = useInputStore()
 
@@ -23,7 +20,7 @@ const tripCost = computed({
 })
 
 function saveTrip(){
-    arrayStore.addItem(
+    inputStore.addItem(
         {
             nome: inputStore.tripName,
             durata: inputStore.tripDays,
@@ -35,7 +32,7 @@ function saveTrip(){
     inputStore.setTripName();
     inputStore.setTripDays();
     inputStore.setTripCost();
-    console.log(arrayStore.arrayViaggi);
+    console.log(inputStore.arrayViaggi);
 }
 </script>
 

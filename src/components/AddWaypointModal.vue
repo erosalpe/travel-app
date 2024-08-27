@@ -1,10 +1,7 @@
 <script setup>
 import { useInputStore } from '../stores/userInput.js'
 import { computed } from 'vue'
-import { useArrayStore } from '../stores/travels.js'
 import waypointSearch from '../components/waypointSearch.vue'
-
-const arrayStore = useArrayStore();
 
 const inputStore = useInputStore()
 
@@ -29,7 +26,7 @@ const waypointTime = computed({
 })
 
 function saveWaypoint(){
-    arrayStore.arrayViaggi[inputStore.clickedTripId].tappe.push(
+    inputStore.arrayViaggi[inputStore.clickedTripId].tappe.push(
         {
             nome: inputStore.waypointName,
             descrizione: inputStore.waypointDescription,
@@ -41,7 +38,7 @@ function saveWaypoint(){
         }
     );
 
-    console.log(arrayStore.arrayViaggi[inputStore.clickedTripId].tappe);
+    console.log(inputStore.arrayViaggi[inputStore.clickedTripId].tappe);
     inputStore.setWaypointName()
     inputStore.setWaypointDescription()
     inputStore.setWaypointDate()

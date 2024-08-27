@@ -1,6 +1,5 @@
 <script setup>
 import MapComponent from '../components/MapComponent.vue'
-import { useArrayStore } from '../stores/travels.js'
 import { ref } from 'vue'
 import AddTripModal from '../components/AddTripModal.vue'
 import AddWaypointModal from '../components/AddWaypointModal.vue'
@@ -11,7 +10,6 @@ import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
 import 'vue3-carousel/dist/carousel.css';  // Importa gli stili del carosello
 
 const inputStore = useInputStore();
-const arrayStore = useArrayStore();
 const markers = ref([]); // Array per memorizzare i marker
 
 
@@ -39,7 +37,7 @@ const setActiveIndex = (index) => {
 
     //crea i marker e li inserisce nell'array
     if (mapInstance.value) {
-        arrayStore.arrayViaggi[index].tappe.forEach((element) => {
+        inputStore.arrayViaggi[index].tappe.forEach((element) => {
             console.log(element.lat, element.lon);
             const newMarker = L.marker([element.lat, element.lon]).addTo(mapInstance.value);
             markers.value.push(newMarker);
@@ -91,12 +89,12 @@ function showMarker(lat,lon){
                 </button>
                 <AddTripModal/>
             </div>
-            <span class="align-self-center m-auto fs-2"  v-if="arrayStore.arrayViaggi.length <= 0">Non ci sono viaggi, aggiungine uno</span>
+            <span class="align-self-center m-auto fs-2"  v-if="inputStore.arrayViaggi.length <= 0">Non ci sono viaggi, aggiungine uno</span>
             
             <!--Parte sinistra contenente i viaggi-->
             <div v-else>
                 <div class="d-flex flex-column gap-5 mt-5 w-100">
-                    <div v-for="(trip,index) in arrayStore.arrayViaggi" class="d-flex justify-content-between bg-primary p-3 rounded fs-6 single-trip" :id="index" :style="getStyle(index)">
+                    <div v-for="(trip,index) in inputStore.arrayViaggi" class="d-flex justify-content-between bg-primary p-3 rounded fs-6 single-trip" :id="index" :style="getStyle(index)">
                         <div class="overflow-hidden w-100">
                             <div class="gap-3 d-flex align-items-center align-self-start">
                                 <span class="text-light">Nome: {{ trip.nome }}</span>
@@ -108,7 +106,7 @@ function showMarker(lat,lon){
                                 <AddWaypointModal/>
                             </div>
                             <div class="d-flex gap-4 mt-3 flex-column waypoints-container">
-                                <div v-for="(waypoint,index) in arrayStore.arrayViaggi[index].tappe"class="bg-secondary-subtle rounded gap-3" @click="showMarker(waypoint.lat, waypoint.lon)">
+                                <div v-for="(waypoint,index) in inputStore.arrayViaggi[index].tappe"class="bg-secondary-subtle rounded gap-3" @click="showMarker(waypoint.lat, waypoint.lon)">
                                     <div class="d-flex gap-4 p-3">
                                         <!-- Utilizza il componente Carousel con i componenti Slide, Pagination, e Navigation -->
                                         <Carousel :items-to-show="1" class="w-50">

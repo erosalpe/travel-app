@@ -4,7 +4,7 @@
     import { computed } from 'vue'
     const userName = computed({
         get: () => inputStore.userName,
-        set: (value) => inputStore.setuserName(value)
+        set: (value) => inputStore.setUserName(value)
     })
 </script>
 
@@ -32,7 +32,7 @@
                             </div>
                             <div class="modal-body d-flex flex-column gap-4">
                                 <label for="userName">Username</label>
-                                <input type="text" v-model="inputStore.userName" id="userName" name="userName" />
+                                <input type="text" v-model="userName" id="userName" name="userName" />
                             </div>
                         </div>
                     </div>
