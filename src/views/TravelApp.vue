@@ -56,11 +56,22 @@ const setActiveIndex = (index) => {
 
 // Funzione per ottenere lo stile in base all'elemento attivo
 const getStyle = (index) => {
+  // Imposta l'altezza di tutti a 70px
+  inputStore.arrayViaggi.forEach((viaggio, indice) => {
+    if (indice !== index) {
+      viaggio.style = {
+        height: '70px',
+        transition: 'height 0.3s ease'
+      };
+    }
+  });
+
+  // Ritorna lo stile per l'elemento selezionato
   return {
     height: activeIndex.value === index ? '700px' : '70px',
     transition: 'height 0.3s ease'
-  }
-}
+  };
+};
 
 function getTripId(value){
     inputStore.setClickedTripId(value);
