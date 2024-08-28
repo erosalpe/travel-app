@@ -37,8 +37,6 @@ function saveWaypoint(){
             lon: inputStore.waypointLon,
         }
     );
-
-    console.log(inputStore.arrayViaggi[inputStore.clickedTripId].tappe);
     inputStore.setWaypointName()
     inputStore.setWaypointDescription()
     inputStore.setWaypointDate()
@@ -77,11 +75,6 @@ const handleFileChange = (event) => {
   });
 };
 </script>
-
-
-
-
-
 
 <template>
     <div class="modal fade" id="waypointModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -139,13 +132,6 @@ const handleFileChange = (event) => {
     </div>
 </template>
 
-
-
-
-
-
-
-
 <style scoped>
     
 /* Aggiungi stili per le immagini di anteprima */
@@ -158,7 +144,4 @@ const handleFileChange = (event) => {
   max-width: 150px;
   max-height: 150px;
 }
-
-
-
 </style>

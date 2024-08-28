@@ -15,8 +15,6 @@ onMounted(() => {
   // Emetti l'istanza della mappa al componente padre
   emit('map-ready', map);
 });
-
-
 </script>
 
 <template>

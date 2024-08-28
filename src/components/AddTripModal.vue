@@ -36,11 +36,6 @@ function saveTrip(){
 }
 </script>
 
-
-
-
-
-
 <template>
     <div class="modal fade" id="tripModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -75,18 +70,3 @@ function saveTrip(){
         </div>
     </div>
 </template>
-
-
-
-
-
-
-
-
-<style scoped>
-    
-
-
-
-
-</style>

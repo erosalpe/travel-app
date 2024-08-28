@@ -106,11 +106,6 @@ function showMarker(lat, lon, title) {
 }
 </script>
 
-
-
-
-
-
 <template>
     <div id="h-app" class="d-flex gap-5">
         <div id="trip-container" class="w-50 bg-light p-4 rounded d-flex flex-column h-100 overflow-auto">
@@ -183,13 +178,6 @@ function showMarker(lat, lon, title) {
         
     </div>
 </template>
-
-
-
-
-
-
-
 
 <style scoped>
     #h-app{
