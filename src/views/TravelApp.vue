@@ -18,33 +18,33 @@ const activeIndex = ref(null)
 
 // Funzione per aggiornare l'indice attivo
 const setActiveIndex = (index) => {
+    // Se l'elemento cliccato è già attivo, lo disattiviamo
+    if (activeIndex.value === index) {
+        activeIndex.value = null;
 
-  // Se l'elemento cliccato è già attivo, lo disattiviamo
-  if (activeIndex.value === index) {
-    activeIndex.value = null
-
-    // Itera su tutti i marker e rimuovili dalla mappa
-    markers.value.forEach(marker => {
-        marker.remove(); // Rimuove il marker dalla mappa
-    });
-
-    // Svuota l'array dei marker
-    markers.value = [];
-  } else {
-
-    // Altrimenti, attiviamo l'elemento cliccato
-    activeIndex.value = index
-
-    //crea i marker e li inserisce nell'array
-    if (mapInstance.value) {
-        inputStore.arrayViaggi[index].tappe.forEach((element) => {
-            console.log(element.lat, element.lon);
-            const newMarker = L.marker([element.lat, element.lon]).addTo(mapInstance.value);
-            markers.value.push(newMarker);
+        // Itera su tutti i marker e rimuovili dalla mappa
+        markers.value.forEach(marker => {
+            marker.remove(); // Rimuove il marker dalla mappa
         });
-        
+
+        // Svuota l'array dei marker
+        markers.value = [];
+    } else {
+        // Altrimenti, attiviamo l'elemento cliccato
+        activeIndex.value = index;
+
+        //crea i marker e li inserisce nell'array
+        if (mapInstance.value) {
+            inputStore.arrayViaggi[index].tappe.forEach((element) => {
+                console.log(element.lat, element.lon);
+                const newMarker = L.marker([element.lat, element.lon])
+                    .addTo(mapInstance.value)
+                    .bindPopup(`<b>${element.nome}</b>`)
+                    .openPopup();
+                markers.value.push(newMarker); // Aggiungi direttamente il marker
+            });
+        }
     }
-  }
 }
 
 // Funzione per ottenere lo stile in base all'elemento attivo
@@ -65,23 +65,24 @@ function onMapReady(map) {
   mapInstance.value = map;
 }
 
-function showMarker(lat,lon){
+function showMarker(lat, lon, title) {
     console.log(lat, lon);
     if (mapInstance.value) {
+        const precision = 1e-6; // Precisione di confronto
         const exists = markers.value.some(marker => 
-        marker.lat === lat && marker.lon === lon
-    );
+            Math.abs(marker.getLatLng().lat - lat) < precision && 
+            Math.abs(marker.getLatLng().lng - lon) < precision
+        );
 
-    if (!exists) {
-        // Aggiungi il marker alla mappa
-        const newMarker = L.marker([lat, lon]).addTo(mapInstance.value);
-        // Aggiungi il marker al tuo array di markers
-        markers.value.push({ lat: lat, lon: lon, marker: newMarker });
-        // Esegui qualsiasi altra azione se il marker non esiste
-        console.log('Marker aggiunto!');
-    } else {
-        console.log('Il marker esiste già.');
-    }
+        if (!exists) {
+            // Aggiungi il marker alla mappa
+            const newMarker = L.marker([lat, lon]).addTo(mapInstance.value).bindPopup(`<b>${title}</b>`).openPopup();
+            // Aggiungi il marker al tuo array di markers
+            markers.value.push(newMarker); // Aggiungi direttamente il marker
+            console.log('Marker aggiunto!');
+        } else {
+            console.log('Il marker esiste già.');
+        }
         mapInstance.value.setView([lat, lon], 15);
     }
 }
@@ -123,7 +124,7 @@ function showMarker(lat,lon){
                                 <AddWaypointModal/>
                             </div>
                             <div class="d-flex gap-4 mt-3 flex-column waypoints-container">
-                                <div v-for="(waypoint,index) in inputStore.arrayViaggi[index].tappe"class="bg-secondary-subtle rounded gap-3 waypoint-margin" @click="showMarker(waypoint.lat, waypoint.lon)">
+                                <div v-for="(waypoint,index) in inputStore.arrayViaggi[index].tappe"class="bg-secondary-subtle rounded gap-3 waypoint-margin" @click="showMarker(waypoint.lat, waypoint.lon, waypoint.nome)">
                                     <div class="d-flex gap-4 p-3">
                                         <!-- Utilizza il componente Carousel con i componenti Slide, Pagination, e Navigation -->
                                         <Carousel :items-to-show="1" class="w-50">
