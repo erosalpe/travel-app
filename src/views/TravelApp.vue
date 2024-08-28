@@ -30,6 +30,13 @@ const setActiveIndex = (index) => {
         // Svuota l'array dei marker
         markers.value = [];
     } else {
+        // Itera su tutti i marker e rimuovili dalla mappa
+        markers.value.forEach(marker => {
+            marker.remove(); // Rimuove il marker dalla mappa
+        });
+
+        // Svuota l'array dei marker
+        markers.value = [];
         // Altrimenti, attiviamo l'elemento cliccato
         activeIndex.value = index;
 
