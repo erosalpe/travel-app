@@ -34,6 +34,10 @@
                                 <label for="userName">Username</label>
                                 <input type="text" v-model="userName" id="userName" name="userName" />
                             </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Indietro</button>
+                                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Salva</button>
+                            </div>
                         </div>
                     </div>
                 </div>

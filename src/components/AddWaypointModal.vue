@@ -132,7 +132,7 @@ const handleFileChange = (event) => {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Indietro</button>
-                    <button type="button" class="btn btn-success" @click="saveWaypoint">Aggiungi</button>
+                    <button type="button" class="btn btn-success" @click="saveWaypoint" data-bs-dismiss="modal">Aggiungi</button>
                 </div>
             </div>
         </div>
