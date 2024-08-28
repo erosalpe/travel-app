@@ -53,12 +53,12 @@ function saveTrip(){
 
                     <div class="d-flex flex-column">
                         <label for="tripDays">Durata del viaggio in giorni:</label>
-                        <input type="number" v-model="tripDays" min="0" max="365" placeholder="Massimo 32 caratteri" id="tripDays" name="tripDays"/>
+                        <input type="number" v-model="tripDays" min="0" max="365" id="tripDays" name="tripDays"/>
                     </div>
 
                     <div class="d-flex flex-column">
                         <label for="tripCost">Costo del viaggio:</label>
-                        <input type="number" v-model="tripCost" min="0" max="9999999" placeholder="Massimo 32 caratteri" id="tripCost" name="tripCost"/>
+                        <input type="number" v-model="tripCost" min="0" max="9999999" id="tripCost" name="tripCost"/>
                     </div>
 
                 </div>

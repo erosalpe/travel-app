@@ -37,10 +37,10 @@ function saveWaypoint(){
             lon: inputStore.waypointLon,
         }
     );
-    inputStore.setWaypointName()
-    inputStore.setWaypointDescription()
-    inputStore.setWaypointDate()
-    inputStore.setWaypointTime()
+    inputStore.setWaypointName('')
+    inputStore.setWaypointDescription('')
+    inputStore.setWaypointDate('')
+    inputStore.setWaypointTime('')
     inputStore.resetWaypointImages([])
     inputStore.setWaypointLat(0)
     inputStore.setWaypointLon(0)
