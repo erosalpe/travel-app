@@ -60,7 +60,7 @@ const getStyle = (index) => {
   inputStore.arrayViaggi.forEach((viaggio, indice) => {
     if (indice !== index) {
       viaggio.style = {
-        height: '70px',
+        height: '60px',
         transition: 'height 0.3s ease'
       };
     }
@@ -68,7 +68,7 @@ const getStyle = (index) => {
 
   // Ritorna lo stile per l'elemento selezionato
   return {
-    height: activeIndex.value === index ? '700px' : '70px',
+    height: activeIndex.value === index ? '700px' : '60px',
     transition: 'height 0.3s ease'
   };
 };
