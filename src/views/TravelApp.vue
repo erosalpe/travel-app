@@ -193,7 +193,7 @@ function showMarker(lat, lon, title) {
 
 <style scoped>
     #h-app{
-        height: 90vh;
+        height: 88vh;
     }
 
     .rotated {
